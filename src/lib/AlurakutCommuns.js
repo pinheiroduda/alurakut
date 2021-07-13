@@ -303,8 +303,8 @@ export function OrkutNostalgicIconSet(props) {
                     key={`orkut__icon_set__${slug}_img_${index}`}
                     src={`https://alurakut.vercel.app/icons/${icon}.svg`}
                     style={{
-                      marginRight: '2px',
-                      opacity: isHeartActive ? 1 : '0.5'
+                      marginRight: '2px'
+                      // opacity: isHeartActive ? 1 : '0.5'
                     }}
                   />
                 )
