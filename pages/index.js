@@ -34,8 +34,7 @@ function ProfileSidebar(propriedades) {
 
 export default function Home() {
   const randomUser = 'pinheiroduda'
-  React.useState(['Alurakut'])
-  const comunities = ['Alurakut']
+  const [comunities, setcomunities] = React.useState(['Alurakut'])
   const favoritePeople = [
     'juunegreiros',
     'omariosouto',
@@ -66,7 +65,8 @@ export default function Home() {
               onSubmit={function handleCreateComunity(e) {
                 e.preventDefault()
 
-                comunities.push('Alura Stars')
+                const updatedComunities = [...comunities, 'Alura Stars']
+                setcomunities(updatedComunities)
               }}
             >
               <div>
@@ -97,8 +97,8 @@ export default function Home() {
             <ul>
               {comunities.map(itemAtual => {
                 return (
-                  <li>
-                    <a href={`/users/${itemAtual}`} key={itemAtual}>
+                  <li key={itemAtual.id}>
+                    <a href={`/users/${itemAtual}`}>
                       <img src={`https://placehold.it/300x300`} />
                       <span>{itemAtual}</span>
                     </a>
@@ -116,8 +116,8 @@ export default function Home() {
             <ul>
               {favoritePeople.map(itemAtual => {
                 return (
-                  <li>
-                    <a href={`/users/${itemAtual}`} key={itemAtual}>
+                  <li key={itemAtual}>
+                    <a href={`/users/${itemAtual}`}>
                       <img src={`https://github.com/${itemAtual}.png`} />
                       <span>{itemAtual}</span>
                     </a>
