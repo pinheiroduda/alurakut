@@ -1,3 +1,4 @@
+import React from 'react'
 import MainGrid from '../src/components/MainGrid'
 import Box from '../src/components/Box'
 import {
@@ -33,6 +34,7 @@ function ProfileSidebar(propriedades) {
 
 export default function Home() {
   const randomUser = 'pinheiroduda'
+  React.useState(['Alurakut'])
   const comunities = ['Alurakut']
   const favoritePeople = [
     'juunegreiros',
