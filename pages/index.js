@@ -1,6 +1,6 @@
 import MainGrid from '../src/components/MainGrid'
 import Box from '../src/components/Box'
-import { AlurakutMenu } from '../src/lib/AlurakutCommuns'
+import { AlurakutMenu, OrkutNostalgicIconSet } from '../src/lib/AlurakutCommuns'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
 
 function ProfileSidebar(propriedades) {
@@ -16,14 +16,14 @@ function ProfileSidebar(propriedades) {
 }
 
 export default function Home() {
-  const randomUser = 'omariosouto'
+  const randomUser = 'pinheiroduda'
   const favoritePeople = [
     'juunegreiros',
     'omariosouto',
-    'peas',
+    'maykbrito',
     'rafaballerini',
-    'marcobrunodev',
-    'felipealho'
+    'peas',
+    'emilioheinz'
   ]
 
   return (
