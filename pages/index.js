@@ -9,14 +9,14 @@ import {
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
 
 function ProfileSidebar(propriedades) {
-  console.log(propriedades)
   return (
-    <Box>
+    <Box as="aside">
       <img
         src={`https://github.com/${propriedades.githubUser}.png`}
         style={{ borderRadius: '8px' }}
       />
       <hr />
+
       <p>
         <a
           className="boxLink"
@@ -34,7 +34,13 @@ function ProfileSidebar(propriedades) {
 
 export default function Home() {
   const randomUser = 'pinheiroduda'
-  const [comunities, setcomunities] = React.useState(['Alurakut'])
+  const [comunities, setComunities] = React.useState([
+    {
+      id: '123456789',
+      title: 'Eu odeio acordar cedo',
+      image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
+    }
+  ])
   const favoritePeople = [
     'juunegreiros',
     'omariosouto',
@@ -64,9 +70,18 @@ export default function Home() {
             <form
               onSubmit={function handleCreateComunity(e) {
                 e.preventDefault()
+                const dadosDoForm = new FormData(e.target)
 
-                const updatedComunities = [...comunities, 'Alura Stars']
-                setcomunities(updatedComunities)
+                console.log('Campo: ', dadosDoForm.get('title'))
+                console.log('Campo: ', dadosDoForm.get('image'))
+
+                const comunity = {
+                  id: new Date().toISOString(),
+                  title: dadosDoForm.get('title'),
+                  image: dadosDoForm.get('image')
+                }
+                const updatedComunities = [...comunities, comunity]
+                setComunities(updatedComunities)
               }}
             >
               <div>
@@ -94,13 +109,15 @@ export default function Home() {
           style={{ gridArea: 'profileRelationsArea' }}
         >
           <ProfileRelationsBoxWrapper>
+            <h2 className="smallTitle">Comunities ({comunities.length})</h2>
+
             <ul>
               {comunities.map(itemAtual => {
                 return (
                   <li key={itemAtual.id}>
-                    <a href={`/users/${itemAtual}`}>
-                      <img src={`https://placehold.it/300x300`} />
-                      <span>{itemAtual}</span>
+                    <a href={`/users/${itemAtual.title}`}>
+                      <img src={itemAtual.image} />
+                      <span>{itemAtual.title}</span>
                     </a>
                   </li>
                 )
