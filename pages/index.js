@@ -8,11 +8,11 @@ import {
 } from '../src/lib/AlurakutCommuns'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
 
-function ProfileSidebar(propriedades) {
+function ProfileSidebar(properties) {
   return (
     <Box as="aside">
       <img
-        src={`https://github.com/${propriedades.githubUser}.png`}
+        src={`https://github.com/${properties.githubUser}.png`}
         style={{ borderRadius: '8px' }}
       />
       <hr />
@@ -20,15 +20,37 @@ function ProfileSidebar(propriedades) {
       <p>
         <a
           className="boxLink"
-          href="https://github.com/${propriedades.githubUser}"
+          href="https://github.com/${properties.githubUser}"
         >
-          @{propriedades.githubUser}
+          @{properties.githubUser}
         </a>
       </p>
 
       <hr />
       <AlurakutProfileSidebarMenuDefault />
     </Box>
+  )
+}
+
+function ProfileRelationsBox(properties) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {properties.title} ({properties.items.length})
+      </h2>
+      <ul>
+        {/* {seguidores.map((itemAtual) => {
+          return (
+            <li key={itemAtual}>
+              <a href={`https://github.com/${itemAtual}.png`}>
+                <img src={itemAtual.image} />
+                <span>{itemAtual.title}</span>
+              </a>
+            </li>
+          )
+        })} */}
+      </ul>
+    </ProfileRelationsBoxWrapper>
   )
 }
 
@@ -49,6 +71,20 @@ export default function Home() {
     'peas',
     'emilioheinz'
   ]
+
+  const [followers, setFollowers] = React.useState([])
+  // 0 -Pegar o array de dados do github
+  React.useEffect(function () {
+    fetch('https://api.github.com/users/pinheiroduda/followers')
+      .then(function (serverAnswer) {
+        return serverAnswer.json()
+      })
+      .then(function (completeAnswer) {
+        console.log(completeAnswer)
+      })
+  }, [])
+
+  // 1 - Criar um box que vai ter um map, baseado nos itens do array que pegamos do Github
 
   return (
     <>
@@ -108,6 +144,8 @@ export default function Home() {
           className="profileRelationsArea"
           style={{ gridArea: 'profileRelationsArea' }}
         >
+          <ProfileRelationsBox title="Followers" items={followers} />
+
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">Comunities ({comunities.length})</h2>
 
