@@ -54,15 +54,10 @@ function ProfileRelationsBox(properties) {
   )
 }
 
+// usada dessa forma para retornar componentes no formato de função, retira a necessidade de importarmos o componente (ex: import React, {Component})
 export default function Home() {
   const randomUser = 'pinheiroduda'
-  const [comunities, setComunities] = React.useState([
-    {
-      id: '123456789',
-      title: 'Eu odeio acordar cedo',
-      image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
-    }
-  ])
+  const [communities, setCommunities] = React.useState([])
   const favoritePeople = [
     'juunegreiros',
     'omariosouto',
@@ -75,14 +70,43 @@ export default function Home() {
   const [followers, setFollowers] = React.useState([])
   // 0 -Pegar o array de dados do github
   React.useEffect(function () {
+    // GET
     fetch('https://api.github.com/users/pinheiroduda/followers')
       .then(function (serverAnswer) {
         return serverAnswer.json()
       })
       .then(function (completeAnswer) {
-        console.log(completeAnswer)
+        setFollowers(completeAnswer)
+      })
+
+    // API GraphQL
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        Authorization: 'c6f6d14b73f3510276a0da6ad95550',
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify({
+        query: `query {
+          allCommunities {
+            title
+            id
+            imageUrl
+            creatorSlug
+          }
+        }`
+      })
+    })
+      .then(response => response.json()) // Pega o retorno do response.json() e já retorna, se abrisse {} teria que especificar um return depois
+      .then(completeAnswer => {
+        const datoCommunities = completeAnswer.data.allCommunities
+        console.log(datoCommunities)
+        setCommunities(datoCommunities)
       })
   }, [])
+
+  console.log('seguidores antes do return', followers)
 
   // 1 - Criar um box que vai ter um map, baseado nos itens do array que pegamos do Github
 
@@ -104,20 +128,20 @@ export default function Home() {
           <Box>
             <h2 className="subTitle">O que você deseja fazer?</h2>
             <form
-              onSubmit={function handleCreateComunity(e) {
+              onSubmit={function handleCreateCommunity(e) {
                 e.preventDefault()
                 const dadosDoForm = new FormData(e.target)
 
                 console.log('Campo: ', dadosDoForm.get('title'))
                 console.log('Campo: ', dadosDoForm.get('image'))
 
-                const comunity = {
-                  id: new Date().toISOString(),
+                const community = {
                   title: dadosDoForm.get('title'),
-                  image: dadosDoForm.get('image')
+                  imageUrl: dadosDoForm.get('image'),
+                  creatorSlug: randomUser
                 }
-                const updatedComunities = [...comunities, comunity]
-                setComunities(updatedComunities)
+                const updatedCommunities = [...communities, community]
+                setCommunities(updatedCommunities)
               }}
             >
               <div>
@@ -147,14 +171,14 @@ export default function Home() {
           <ProfileRelationsBox title="Followers" items={followers} />
 
           <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">Comunities ({comunities.length})</h2>
+            <h2 className="smallTitle"> Communities ({communities.length})</h2>
 
             <ul>
-              {comunities.map(itemAtual => {
+              {communities.map(itemAtual => {
                 return (
                   <li key={itemAtual.id}>
-                    <a href={`/users/${itemAtual.title}`}>
-                      <img src={itemAtual.image} />
+                    <a href={`/communities/${itemAtual.id}`}>
+                      <img src={itemAtual.imageUrl} />
                       <span>{itemAtual.title}</span>
                     </a>
                   </li>
@@ -165,7 +189,7 @@ export default function Home() {
 
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
-              Comunity People ({favoritePeople.length})
+              Community People ({favoritePeople.length})
             </h2>
 
             <ul>
