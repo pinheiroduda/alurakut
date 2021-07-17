@@ -140,8 +140,20 @@ export default function Home() {
                   imageUrl: dadosDoForm.get('image'),
                   creatorSlug: randomUser
                 }
-                const updatedCommunities = [...communities, community]
-                setCommunities(updatedCommunities)
+
+                fetch('/api/communities', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify(community)
+                }).then(async response => {
+                  const data = response.json()
+                  console.log(data.cratedRecord)
+                  const community = data.cratedRecord
+                  const updatedCommunities = [...communities, community]
+                  setCommunities(updatedCommunities)
+                })
               }}
             >
               <div>
