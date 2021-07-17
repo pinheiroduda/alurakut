@@ -34,7 +34,14 @@ export default function LoginScreen() {
               Acesse agora mesmo com seu usuário do <strong>GitHub</strong>!
             </p>
             <input placeholder="Usuário" />
-            <button type="submit">Login</button>
+            <button
+              onClick={() => {
+                alert('Alguém clicou no botão!')
+              }}
+              type="submit"
+            >
+              Login
+            </button>
           </form>
 
           <footer className="box">
