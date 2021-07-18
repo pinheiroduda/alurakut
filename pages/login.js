@@ -1,6 +1,10 @@
 import React from 'react'
+import { useRouter } from 'next/router' // o useRouter permite que usemos o sistema de roteamento do React - Hook do Next.js
 
 export default function LoginScreen() {
+  const router = useRouter()
+  const [githubUser, setGithubUser] = React.useState('')
+
   return (
     <main
       style={{
@@ -29,19 +33,27 @@ export default function LoginScreen() {
         </section>
 
         <section className="formArea">
-          <form className="box">
+          <form
+            className="box"
+            onSubmit={eventInfos => {
+              eventInfos.preventDefault()
+              alert('Alguém clicou no botão!')
+              console.log('Usuário', githubUser)
+              router.push('/', {})
+            }}
+          >
             <p>
               Acesse agora mesmo com seu usuário do <strong>GitHub</strong>!
             </p>
-            <input placeholder="Usuário" />
-            <button
-              onClick={() => {
-                alert('Alguém clicou no botão!')
+            <input
+              placeholder="Usuário"
+              value={githubUser}
+              onChange={() => {
+                setGithubUser(event.target.value)
               }}
-              type="submit"
-            >
-              Login
-            </button>
+            />
+            {githubUser.length === 0 ? 'Preencha o campo' : ''}
+            <button type="submit">Login</button>
           </form>
 
           <footer className="box">
