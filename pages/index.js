@@ -1,5 +1,6 @@
 import React from 'react'
 import nookies from 'nookies'
+import jsonwebtoken from 'jsonwebtoken'
 import MainGrid from '../src/components/MainGrid'
 import Box from '../src/components/Box'
 import {
@@ -224,10 +225,10 @@ export default function Home(props) {
   )
 }
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   const cookies = nookies.get(context)
   const token = cookies.USER_TOKEN
-  console.log('cookies', token)
+  console.log('Token decodificado: ', jsonwebtoken.decode(token))
 
   return {
     props: {
