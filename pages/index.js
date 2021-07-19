@@ -228,11 +228,31 @@ export default function Home(props) {
 export async function getServerSideProps(context) {
   const cookies = nookies.get(context)
   const token = cookies.USER_TOKEN
-  console.log('Token decodificado: ', jsonwebtoken.decode(token))
 
+  const { isAuthenticated } = await fetch(
+    'https://alurakut.vercel.app/api/auth',
+    {
+      headers: {
+        Authorization: token
+      }
+    }
+  ).then(answer => answer.json())
+
+  console.log('isAuthenticated', isAuthenticated)
+
+  if (!isAuthenticated) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    }
+  }
+
+  const { githubUser } = jsonwebtoken.decode(token)
   return {
     props: {
-      githubUser: 'pinheiroduda'
+      githubUser
     } // will be passed to the page component as props
   }
 }
