@@ -1,4 +1,5 @@
 import React from 'react'
+import nookies from 'nookies'
 import MainGrid from '../src/components/MainGrid'
 import Box from '../src/components/Box'
 import {
@@ -55,8 +56,8 @@ function ProfileRelationsBox(properties) {
 }
 
 // usada dessa forma para retornar componentes no formato de função, retira a necessidade de importarmos o componente (ex: import React, {Component})
-export default function Home() {
-  const randomUser = 'pinheiroduda'
+export default function Home(props) {
+  const randomUser = props.githubUser
   const [communities, setCommunities] = React.useState([])
   const favoritePeople = [
     'juunegreiros',
@@ -221,4 +222,16 @@ export default function Home() {
       </MainGrid>
     </>
   )
+}
+
+export async function getStaticProps(context) {
+  const cookies = nookies.get(context)
+  const token = cookies.USER_TOKEN
+  console.log('cookies', token)
+
+  return {
+    props: {
+      githubUser: 'pinheiroduda'
+    } // will be passed to the page component as props
+  }
 }
