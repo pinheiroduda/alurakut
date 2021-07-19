@@ -63,7 +63,7 @@ export default function Home(props) {
   const favoritePeople = [
     'juunegreiros',
     'omariosouto',
-    'maykbrito',
+    'lucasmontano',
     'rafaballerini',
     'peas',
     'emilioheinz'
@@ -122,7 +122,7 @@ export default function Home(props) {
         </div>
         <div className="welcomeArea" style={{ gridArea: 'welcomeArea' }}>
           <Box>
-            <h1 className="title">Welcome</h1>
+            <h1 className="title"> Bem vindo(a) </h1>
 
             <OrkutNostalgicIconSet />
           </Box>
@@ -182,10 +182,10 @@ export default function Home(props) {
           className="profileRelationsArea"
           style={{ gridArea: 'profileRelationsArea' }}
         >
-          <ProfileRelationsBox title="Followers" items={followers} />
+          <ProfileRelationsBox title="Seguidores" items={followers} />
 
           <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle"> Communities ({communities.length})</h2>
+            <h2 className="smallTitle"> Comunidades ({communities.length})</h2>
 
             <ul>
               {communities.map(itemAtual => {
@@ -203,7 +203,7 @@ export default function Home(props) {
 
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle">
-              Community People ({favoritePeople.length})
+              Pessoas da comunidade ({favoritePeople.length})
             </h2>
 
             <ul>

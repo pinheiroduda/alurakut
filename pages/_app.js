@@ -12,11 +12,8 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: sans-serif;
     background-color: #FFB6C1;
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-    background: url('https://data.1freewallpapers.com/download/3d-technology-digital-art-purple-color-4k-abstract.jpg');
-    background-size: cover;
+    background-image: url('https://res-3.cloudinary.com/fieldfisher/image/upload/c_lfill,g_auto/f_auto,q_auto/v1/sectors/technology/tech_neoncircuitboard_857021704_medium_lc5h05');
+    background-position: center;
   }
 
   #__next {
