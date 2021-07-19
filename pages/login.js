@@ -1,5 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router' // o useRouter permite que usemos o sistema de roteamento do React - Hook do Next.js
+import nookies from 'nookies'
 
 export default function LoginScreen() {
   const router = useRouter()
@@ -47,7 +48,11 @@ export default function LoginScreen() {
                 body: JSON.stringify({ githubUser: 'pinheiroduda' })
               }).then(async serverAnswer => {
                 const answerData = await serverAnswer.json()
-                console.log(answerData.token)
+                const token = answerData.token
+                nookies.set(null, 'USER_TOKEN', token, {
+                  path: '/',
+                  maxAge: 86400 * 7
+                })
                 router.push('/')
               })
             }}
