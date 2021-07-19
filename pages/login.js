@@ -37,9 +37,19 @@ export default function LoginScreen() {
             className="box"
             onSubmit={eventInfos => {
               eventInfos.preventDefault()
-              alert('Alguém clicou no botão!')
+              // alert('Alguém clicou no botão!')
               console.log('Usuário', githubUser)
-              router.push('/', {})
+              fetch('https://alurakut.vercel.app/api/login', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ githubUser: 'pinheiroduda' })
+              }).then(async serverAnswer => {
+                const answerData = await serverAnswer.json()
+                console.log(answerData.token)
+                router.push('/')
+              })
             }}
           >
             <p>
