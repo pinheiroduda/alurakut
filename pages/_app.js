@@ -12,6 +12,11 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: sans-serif;
     background-color: #FFB6C1;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    background: url('https://data.1freewallpapers.com/download/3d-technology-digital-art-purple-color-4k-abstract.jpg');
+    background-size: cover;
   }
 
   #__next {
