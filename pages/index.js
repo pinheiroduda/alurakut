@@ -38,44 +38,63 @@ function ProfileRelationsBox(properties) {
       <h2 className="smallTitle">
         {properties.title} ({properties.items.length})
       </h2>
-      <ul></ul>
+      <ul>
+        {properties.items.slice(0, 6).map(itemAtual => {
+          return (
+            <li key={itemAtual.id}>
+              <a
+                href={`https://github.com/${itemAtual.title}`}
+                key={itemAtual.id}
+              >
+                <img src={`${itemAtual.avatarUrl}`}></img>
+                <span>{itemAtual.title}</span>
+              </a>
+            </li>
+          )
+        })}
+      </ul>
     </ProfileRelationsBoxWrapper>
   )
 }
 
 // usada dessa forma para retornar componentes no formato de função, retira a necessidade de importarmos o componente (ex: import React, {Component})
 export default function Home(props) {
-  const randomUser = props.githubUser
+  const githubUser = props.githubUser
   const [communities, setCommunities] = React.useState([])
-
   const [followers, setFollowers] = React.useState([])
-  if (followers.length > 6) {
-    followers.length = 6
-  }
-
   const [following, setFollowing] = React.useState([])
-  if (following.length > 6) {
-    following.length = 6
-  }
 
   // 0 -Pegar o array de dados do github
   React.useEffect(function () {
-    // GET
-    fetch('https://api.github.com/users/pinheiroduda/followers')
-      .then(function (serverAnswer) {
-        return serverAnswer.json()
-      })
-      .then(function (completeAnswer) {
-        setFollowers(completeAnswer)
-      })
+    if (githubUser) {
+      fetch(`https://api.github.com/users/${githubUser}/followers`)
+        .then(res => res.json())
+        .then(datas => {
+          const followersArray = datas.map(data => {
+            return {
+              title: data.login,
+              avatarUrl: data.avatar_url,
+              id: data.id
+            }
+          })
+          setFollowers(followersArray)
+        })
+    }
 
-    fetch('https://api.github.com/users/pinheiroduda/following')
-      .then(function (serverAnswer) {
-        return serverAnswer.json()
-      })
-      .then(function (completeAnswer) {
-        setFollowing(completeAnswer)
-      })
+    if (githubUser) {
+      fetch(`https://api.github.com/users/${githubUser}/following`)
+        .then(res => res.json())
+        .then(datas => {
+          const followingArray = datas.map(data => {
+            return {
+              title: data.login,
+              avatarUrl: data.avatar_url,
+              id: data.id
+            }
+          })
+          setFollowing(followingArray)
+        })
+    }
 
     // API GraphQL
     fetch('https://graphql.datocms.com/', {
@@ -114,11 +133,11 @@ export default function Home(props) {
       <MainGrid>
         {/* <Box style="grid-area: profileArea;"> */}
         <div className="profileArea" style={{ gridArea: 'profileArea' }}>
-          <ProfileSidebar githubUser={randomUser} />
+          <ProfileSidebar githubUser={githubUser} />
         </div>
         <div className="welcomeArea" style={{ gridArea: 'welcomeArea' }}>
           <Box>
-            <h1 className="title"> Bem vindo(a) </h1>
+            <h1 className="title"> Bem vindo(a), {githubUser} </h1>
 
             <OrkutNostalgicIconSet />
           </Box>
@@ -136,7 +155,7 @@ export default function Home(props) {
                 const community = {
                   title: dadosDoForm.get('title'),
                   imageUrl: dadosDoForm.get('image'),
-                  creatorSlug: randomUser
+                  creatorSlug: githubUser
                 }
 
                 fetch('/api/communities', {
@@ -178,21 +197,9 @@ export default function Home(props) {
           className="profileRelationsArea"
           style={{ gridArea: 'profileRelationsArea' }}
         >
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle"> Seguidores ({followers.length})</h2>
-            <ul>
-              {followers.map(item => {
-                return (
-                  <li key={item.id}>
-                    <a>
-                      <img src={`https://github.com/${item.login}.png`} />
-                      <span>{item.login}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+          <ProfileRelationsBox title="Seguidores" items={followers} />
+
+          <ProfileRelationsBox title="Seguindo" items={following} />
 
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle"> Comunidades ({communities.length})</h2>
@@ -204,22 +211,6 @@ export default function Home(props) {
                     <a href={`/communities/${itemAtual.id}`}>
                       <img src={itemAtual.imageUrl} />
                       <span>{itemAtual.title}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
-
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle"> Seguindo ({following.length})</h2>
-            <ul>
-              {following.map(item => {
-                return (
-                  <li key={item.id}>
-                    <a>
-                      <img src={`https://github.com/${item.login}.png`} />
-                      <span>{item.login}</span>
                     </a>
                   </li>
                 )
