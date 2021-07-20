@@ -1,94 +1,15 @@
-import React from 'react'
-import { useRouter } from 'next/router' // o useRouter permite que usemos o sistema de roteamento do React - Hook do Next.js
 import nookies from 'nookies'
 
-export default function LogoutScreen() {
-  const router = useRouter()
-  const [githubUser, setGithubUser] = React.useState('')
+export default function Logout() {
+  return <div>Logout</div>
+}
 
-  return (
-    <main
-      style={{
-        display: 'flex',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}
-    >
-      <div className="logoutScreen">
-        <section className="logoArea">
-          <img src="https://alurakut.vercel.app/logo.svg" />
-
-          <p>
-            <strong>Conecte-se</strong> aos seus amigos e familiares usando
-            recados e mensagens instantâneas
-          </p>
-          <p>
-            <strong>Conheça</strong> novas pessoas através de amigos de seus
-            amigos e comunidades
-          </p>
-          <p>
-            <strong>Compartilhe</strong> seus vídeos, fotos e paixões em um só
-            lugar
-          </p>
-        </section>
-
-        <section className="formArea">
-          <form
-            className="box"
-            onSubmit={eventInfos => {
-              eventInfos.preventDefault()
-              // alert('Alguém clicou no botão!')
-              console.log('Usuário', githubUser)
-              fetch('https://alurakut.vercel.app/api/logout', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ githubUser: githubUser })
-              }).then(async serverAnswer => {
-                const answerData = await serverAnswer.json()
-                const token = answerData.token
-                nookies.set(null, 'USER_TOKEN', token, {
-                  path: '/',
-                  maxAge: 86400 * 7
-                })
-                router.push('/')
-              })
-            }}
-          >
-            <p>
-              Acesse agora mesmo com seu usuário do <strong>GitHub</strong>!
-            </p>
-            <input
-              placeholder="Usuário"
-              value={githubUser}
-              onChange={() => {
-                setGithubUser(event.target.value)
-              }}
-            />
-            {githubUser.length === 0 ? 'Preencha o campo' : ''}
-            <button type="submit">Sair</button>
-          </form>
-
-          <footer className="box">
-            <p>
-              Ainda não é membro? <br />
-              <a href="/logout">
-                <strong>ENTRAR JÁ</strong>
-              </a>
-            </p>
-          </footer>
-        </section>
-
-        <footer className="footerArea">
-          <p>
-            © 2021 alura.com.br - <a href="/">Sobre o Orkut.br</a> -{' '}
-            <a href="/">Centro de segurança</a> - <a href="/">Privacidade</a> -{' '}
-            <a href="/">Termos</a> - <a href="/">Contato</a>
-          </p>
-        </footer>
-      </div>
-    </main>
-  )
+export async function getServerSideProps(context) {
+  await nookies.destroy(context, 'USER_TOKEN')
+  return {
+    redirect: {
+      destination: '/login',
+      permanent: false
+    }
+  }
 }

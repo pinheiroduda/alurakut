@@ -75,7 +75,7 @@ export default function LoginScreen() {
             <p>
               Ainda não é membro? <br />
               <a href="/login">
-                <strong>ENTRAR JÁ</strong>
+                <strong> ENTRAR JÁ</strong>
               </a>
             </p>
           </footer>
