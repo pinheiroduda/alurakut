@@ -47,14 +47,6 @@ function ProfileRelationsBox(properties) {
 export default function Home(props) {
   const randomUser = props.githubUser
   const [communities, setCommunities] = React.useState([])
-  //  const favoritePeople = [
-  //    'juunegreiros',
-  //    'omariosouto',
-  //    'lucasmontano',
-  //    'rafaballerini',
-  //    'peas',
-  //    'emilioheinz'
-  //  ]
 
   const [followers, setFollowers] = React.useState([])
   if (followers.length > 6) {
@@ -271,21 +263,3 @@ export async function getServerSideProps(context) {
     } // will be passed to the page component as props
   }
 }
-
-//  <ProfileRelationsBoxWrapper>
-//    <h2 className="smallTitle">
-//      Pessoas da comunidade ({favoritePeople.length})
-//    </h2>
-//    <ul>
-//      {favoritePeople.map(itemAtual => {
-//        return (
-//          <li key={itemAtual}>
-//            <a href={`/users/${itemAtual}`}>
-//              <img src={`https://github.com/${itemAtual}.png`} />
-//              <span>{itemAtual}</span>
-//            </a>
-//          </li>
-//        )
-//      })}
-//    </ul>
-//  </ProfileRelationsBoxWrapper>
