@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import nookies from 'nookies'
 import jsonwebtoken from 'jsonwebtoken'
 import MainGrid from '../src/components/MainGrid'
@@ -18,7 +18,6 @@ function ProfileSidebar(properties) {
         style={{ borderRadius: '8px' }}
       />
       <hr />
-
       <p>
         <a
           className="boxLink"
@@ -27,7 +26,6 @@ function ProfileSidebar(properties) {
           @{properties.githubUser}
         </a>
       </p>
-
       <hr />
       <AlurakutProfileSidebarMenuDefault />
     </Box>
@@ -40,18 +38,7 @@ function ProfileRelationsBox(properties) {
       <h2 className="smallTitle">
         {properties.title} ({properties.items.length})
       </h2>
-      <ul>
-        {/* {seguidores.map((itemAtual) => {
-          return (
-            <li key={itemAtual}>
-              <a href={`https://github.com/${itemAtual}.png`}>
-                <img src={itemAtual.image} />
-                <span>{itemAtual.title}</span>
-              </a>
-            </li>
-          )
-        })} */}
-      </ul>
+      <ul></ul>
     </ProfileRelationsBoxWrapper>
   )
 }
@@ -60,16 +47,25 @@ function ProfileRelationsBox(properties) {
 export default function Home(props) {
   const randomUser = props.githubUser
   const [communities, setCommunities] = React.useState([])
-  const favoritePeople = [
-    'juunegreiros',
-    'omariosouto',
-    'lucasmontano',
-    'rafaballerini',
-    'peas',
-    'emilioheinz'
-  ]
+  //  const favoritePeople = [
+  //    'juunegreiros',
+  //    'omariosouto',
+  //    'lucasmontano',
+  //    'rafaballerini',
+  //    'peas',
+  //    'emilioheinz'
+  //  ]
 
   const [followers, setFollowers] = React.useState([])
+  if (followers.length > 6) {
+    followers.length = 6
+  }
+
+  const [following, setFollowing] = React.useState([])
+  if (following.length > 6) {
+    following.length = 6
+  }
+
   // 0 -Pegar o array de dados do github
   React.useEffect(function () {
     // GET
@@ -79,6 +75,14 @@ export default function Home(props) {
       })
       .then(function (completeAnswer) {
         setFollowers(completeAnswer)
+      })
+
+    fetch('https://api.github.com/users/pinheiroduda/following')
+      .then(function (serverAnswer) {
+        return serverAnswer.json()
+      })
+      .then(function (completeAnswer) {
+        setFollowing(completeAnswer)
       })
 
     // API GraphQL
@@ -182,7 +186,21 @@ export default function Home(props) {
           className="profileRelationsArea"
           style={{ gridArea: 'profileRelationsArea' }}
         >
-          <ProfileRelationsBox title="Seguidores" items={followers} />
+          <ProfileRelationsBoxWrapper>
+            <h2 className="smallTitle"> Seguidores ({followers.length})</h2>
+            <ul>
+              {followers.map(item => {
+                return (
+                  <li key={item.id}>
+                    <a>
+                      <img src={`https://github.com/${item.login}.png`} />
+                      <span>{item.login}</span>
+                    </a>
+                  </li>
+                )
+              })}
+            </ul>
+          </ProfileRelationsBoxWrapper>
 
           <ProfileRelationsBoxWrapper>
             <h2 className="smallTitle"> Comunidades ({communities.length})</h2>
@@ -202,17 +220,14 @@ export default function Home(props) {
           </ProfileRelationsBoxWrapper>
 
           <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Pessoas da comunidade ({favoritePeople.length})
-            </h2>
-
+            <h2 className="smallTitle"> Seguindo ({following.length})</h2>
             <ul>
-              {favoritePeople.map(itemAtual => {
+              {following.map(item => {
                 return (
-                  <li key={itemAtual}>
-                    <a href={`/users/${itemAtual}`}>
-                      <img src={`https://github.com/${itemAtual}.png`} />
-                      <span>{itemAtual}</span>
+                  <li key={item.id}>
+                    <a>
+                      <img src={`https://github.com/${item.login}.png`} />
+                      <span>{item.login}</span>
                     </a>
                   </li>
                 )
@@ -256,3 +271,21 @@ export async function getServerSideProps(context) {
     } // will be passed to the page component as props
   }
 }
+
+//  <ProfileRelationsBoxWrapper>
+//    <h2 className="smallTitle">
+//      Pessoas da comunidade ({favoritePeople.length})
+//    </h2>
+//    <ul>
+//      {favoritePeople.map(itemAtual => {
+//        return (
+//          <li key={itemAtual}>
+//            <a href={`/users/${itemAtual}`}>
+//              <img src={`https://github.com/${itemAtual}.png`} />
+//              <span>{itemAtual}</span>
+//            </a>
+//          </li>
+//        )
+//      })}
+//    </ul>
+//  </ProfileRelationsBoxWrapper>
