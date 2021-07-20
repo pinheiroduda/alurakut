@@ -150,7 +150,7 @@ export default function Home(props) {
                   },
                   body: JSON.stringify(community)
                 }).then(async response => {
-                  const data = response.json()
+                  const data = await response.json()
                   console.log(data.cratedRecord)
                   const community = data.cratedRecord
                   const updatedCommunities = [...communities, community]
