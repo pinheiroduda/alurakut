@@ -7,7 +7,7 @@ import {
   AlurakutMenu,
   AlurakutProfileSidebarMenuDefault,
   OrkutNostalgicIconSet
-} from '../src/lib/AlurakutCommuns'
+} from '../src/lib/AlurakutCommons'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
 
 function ProfileSidebar(props) {

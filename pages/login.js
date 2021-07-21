@@ -15,6 +15,7 @@ export default function LoginScreen() {
         justifyContent: 'center'
       }}
     >
+      >
       <div className="loginScreen">
         <section className="logoArea">
           <img src="https://alurakut.vercel.app/logo.svg" />
