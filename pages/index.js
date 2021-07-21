@@ -10,20 +10,18 @@ import {
 } from '../src/lib/AlurakutCommuns'
 import { ProfileRelationsBoxWrapper } from '../src/components/ProfileRelations'
 
-function ProfileSidebar(properties) {
+function ProfileSidebar(props) {
+  console.log(props)
   return (
     <Box as="aside">
       <img
-        src={`https://github.com/${properties.githubUser}.png`}
+        src={`https://github.com/${props.githubUser}.png`}
         style={{ borderRadius: '8px' }}
       />
       <hr />
       <p>
-        <a
-          className="boxLink"
-          href="https://github.com/${properties.githubUser}"
-        >
-          @{properties.githubUser}
+        <a className="boxLink" href="https://github.com/${props.githubUser}">
+          @{props.githubUser}
         </a>
       </p>
       <hr />
@@ -32,14 +30,14 @@ function ProfileSidebar(properties) {
   )
 }
 
-function ProfileRelationsBox(properties) {
+function ProfileRelationsBox(props) {
   return (
     <ProfileRelationsBoxWrapper>
       <h2 className="smallTitle">
-        {properties.title} ({properties.items.length})
+        {props.title} ({props.items.length})
       </h2>
       <ul>
-        {properties.items.slice(0, 6).map(itemAtual => {
+        {props.items.slice(0, 6).map(itemAtual => {
           return (
             <li key={itemAtual.id}>
               <a
@@ -65,10 +63,10 @@ export default function Home(props) {
   const [following, setFollowing] = React.useState([])
 
   // 0 -Pegar o array de dados do github
-  React.useEffect(function () {
+  React.useEffect(() => {
     if (githubUser) {
       fetch(`https://api.github.com/users/${githubUser}/followers`)
-        .then(res => res.json())
+        .then(response => response.json())
         .then(datas => {
           const followersArray = datas.map(data => {
             return {
@@ -83,7 +81,7 @@ export default function Home(props) {
 
     if (githubUser) {
       fetch(`https://api.github.com/users/${githubUser}/following`)
-        .then(res => res.json())
+        .then(response => response.json())
         .then(datas => {
           const followingArray = datas.map(data => {
             return {
