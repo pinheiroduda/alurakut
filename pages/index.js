@@ -141,7 +141,7 @@ export default function Home(props) {
           </Box>
 
           <Box>
-            <h2 className="subTitle">O que você deseja fazer?</h2>
+            <h2 className="subTitle">Crie uma comunidade</h2>
             <form
               onSubmit={function handleCreateCommunity(e) {
                 e.preventDefault()
